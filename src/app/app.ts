@@ -1,12 +1,16 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  imports: [RouterLink, RouterOutlet],
+  template: ` <header dir="ltr" class=" mb-5 px-20 py-5 bg-gray-300">
+      <div class="flex justify center">
+        <a class="text-blue-500 hover:text-blue-700" [routerLink]="'/Login'">Login Page</a>
+        <a class="ml-10 text-blue-500 hover:text-blue-700" [routerLink]="'/Code'">Code</a>
+      </div>
+    </header>
+
+    <router-outlet></router-outlet>`,
 })
-export class App {
-  protected readonly title = signal('ERP');
-}
+export class App {}

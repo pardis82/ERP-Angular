@@ -1,0 +1,147 @@
+<div [class]="colSpan() || containerClassName() || 'w-full'" dir="rtl">
+    <div class="relative w-full rounded-lg px-3 py-3 " [style.background-color]="backgroundColor()">
+
+        <!-- FIELDSET (border colors) -->
+        <fieldset dir="rtl" class="absolute inset-0 pointer-events-none rounded-lg border transition-colors"
+            [class]="borderClasses()" aria-hidden="true">
+            @if (label() && float()) {
+            <legend class="h-0 overflow-hidden transition-all duration-150 pl-2">
+                <span class="text-xs opacity-0 px-1 inline-block whitespace-nowrap" style="max-width: calc(100% - 8px)">
+                    {{ label() }}
+                </span>
+            </legend>
+            }
+
+        </fieldset>
+
+        <!-- MULTILINE TEXTAREA -->
+        @if (multiline()) {
+        <textarea [appNormalizeDigits]="true" #textareaRef [id]="id()" [name]="name() || id()" [value]="value()"
+            (input)="onInputChange($event); adjustTextareaHeight(textareaRef)" (focus)="onFocus()" (blur)="onBlur()"
+            [rows]="minrows() || 3"
+            class="w-full bg-transparent outline-none text-xs leading-normal font-sans text-right resize-none"
+            [ngClass]="[className() || '', errorMessage() ? 'text-red-600' : '']"
+            [placeholder]="float() ? truncatedPlaceholder() : ''"></textarea>
+        }
+
+
+        <!-- SINGLE LINE INPUT -->
+        @if (!multiline()) {
+        <div class="relative">
+            <input [appNormalizeDigits]="true" [type]="actualType()" [id]="id()" [name]="name() || id()"
+                [value]="value()" (input)="onInputChange($event)" (focus)="onFocus()" (blur)="onBlur()"
+                class="w-full bg-transparent outline-none text-xs leading-normal font-sans text-right pr-1"
+                [ngClass]="[className() || '', errorMessage() ? 'text-red-600' : '']"
+                [placeholder]="float() ? truncatedPlaceholder() : ''" />
+
+            <!-- PASSWORD TOGGLE & STRENGTH -->
+            @if (type() === 'password' && hasValue() ) {
+            <div class="mt-2">
+
+                @if(showValidationUI()){
+                <!-- Strength bar -->
+                <div class="w-full bg-gray-300 rounded h-1 mb-1  ">
+                    <div class="h-full rounded transition-all duration-200 " [class]="passwordColor()"
+                        [style.width.%]="passwordPercentage()"></div>
+                </div>
+                }
+
+
+                <!-- Toggle button -->
+                <button type="button" (click)="togglePasswordVisibility()"
+                    class="absolute left-0 text-gray-500 hover:text-gray-700 transition-colors duration-200 p-1"
+                    [class]="showValidationUI() ? 'top-1/2 -translate-y-1/2' : 'top-3/4 -translate-y-1/2'">
+                    <!-- visible -->
+                    @if (isPasswordVisible()) {
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M10.73 5.08a10.75 10.75 0 0 1 11.2 6.57a1 1 0 0 1 0 .7a10.8 10.8 0 0 1-1.44 2.49m-6.41-.68a3 3 0 0 1-4.24-4.25">
+                        </path>
+                        <path
+                            d="M17.48 17.5a10.75 10.75 0 0 1-15.42-5.15a1 1 0 0 1 0-.7a10.75 10.75 0 0 1 4.45-5.14M2 2l20 20">
+                        </path>
+                    </svg>
+                    }
+
+
+                    <!-- hidden -->
+                    @if (!isPasswordVisible()) {
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M21.26 10.96c.47.62.47 1.46 0 2.07C19.76 14.99 16.18 19 12 19S4.24 14.99 2.74 13.03a1.7 1.7 0 0 1 0-2.07C4.24 9.01 7.82 5 12 5s7.76 4.01 9.26 5.96Z">
+                        </path>
+                        <path d="M12 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6Z"></path>
+                    </svg>
+                    }
+
+                </button>
+            </div>
+            }
+
+        </div>
+        }
+
+
+        <!-- FLOATING LABEL -->
+        @if (label()) {
+        <label [for]="id()" class="absolute transition-all duration-150 px-1 font-sans pointer-events-none right-2"
+            [ngClass]="labelTextClasses()">
+            {{ label() }}
+        </label>
+        }
+
+    </div>
+
+    @if(showValidationUI()|| getDisplayMessage().type==='error') {
+    <div class="mt-1 mr-1">
+        @switch (getDisplayMessage().type) {
+        <!-- ERROR -->
+        @case ('error') {
+        <p class="text-red-500 font-sans text-[12.5px]">
+            {{ getDisplayMessage().content }}
+        </p>
+        }
+        <!-- PASSWORD STRONG -->
+        @case ('password-strong') {
+        <div class="text-xs text-green-600 flex items-center gap-1">
+            <svg width="10" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            پسورد قوی
+        </div>
+        }
+        <!-- PASSWORD HELPER -->
+        @case ('password-helper') {
+        <div class="text-gray-500 font-sans text-[12.5px]">
+            @if (getDisplayMessage().content.helperText) {
+            <p>
+                {{ getDisplayMessage().content.helperText }}
+            </p>
+            <ul>
+                @for (rule of getDisplayMessage().content.rules; track rule) {
+                <li>
+                    {{ rule }}
+                </li>
+                }
+
+            </ul>
+            }
+
+        </div>
+        }
+
+        <!-- GENERAL HELPER -->
+        @case ('general-helper') {
+        <p class="text-gray-500 font-sans text-[12.5px]">
+            {{ getDisplayMessage().content }}
+        </p>
+        }
+        }
+
+    </div>
+    }
+
+</div>

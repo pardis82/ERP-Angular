@@ -1,0 +1,30 @@
+<div dir="rtl" class="mt-2 p-4 flex justify-center">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="grid lg:grid-cols-1 gap-4 w-80">
+
+        <!-- Username Field with formControlName -->
+        <app-text-field formControlName="username" [showValidationUI]="false" label="نام کاربری"
+            placeholder="نام کاربری خود را وارد کنید" backgroundColor="#F1F3E0" type="username"
+            [errorMessage]="loginForm.get('username')?.touched && loginForm.get('username')?.errors?.['required'] ? 'نام کاربری الزامی است' : ''">
+        </app-text-field>
+
+        <!-- Password Field with formControlName -->
+        <app-text-field formControlName="password" [showValidationUI]="false" label="رمز عبور"
+            placeholder="رمز عبور خود را وارد کنید" backgroundColor="#F1F3E0" type="password"
+            [errorMessage]="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required'] ? 'رمز عبور الزامی است' : ''">
+        </app-text-field>
+
+        <div class="flex items-center justify-start gap-2">
+            <input type="checkbox" id="rememberMe" formControlName="rememberme"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+            <label for="rememberMe" class="text-sm text-gray-700 cursor-pointer">
+                مرا به خاطر بسپار
+            </label>
+        </div>
+
+        <!-- Submit button with form submission -->
+        <button type="submit" [disabled]="!formValid()"
+            class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-70">
+            ورود به سیستم
+        </button>
+    </form>
+</div>
