@@ -1,15 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PhoneNumberValidation } from './phone-number-validation';
+import {PhoneNumberValidationService} from './phone-number-validation'
 
-describe('PhoneNumberValidation', () => {
-  let service: PhoneNumberValidation;
-
+describe('NationalCodeValidationService', () => {
+  let service: PhoneNumberValidationService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PhoneNumberValidation);
-  });
 
+    service = TestBed.inject(PhoneNumberValidationService);
+  });
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

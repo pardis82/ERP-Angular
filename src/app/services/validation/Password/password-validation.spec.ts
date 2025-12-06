@@ -1,15 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PasswordValidation } from './password-validation';
+import { PasswordValidationService } from './password-validation';
 
-describe('PasswordValidation', () => {
-  let service: PasswordValidation;
-
+describe('NationalCodeValidationService', () => {
+  let service: PasswordValidationService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PasswordValidation);
-  });
 
+    service = TestBed.inject(PasswordValidationService);
+  });
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

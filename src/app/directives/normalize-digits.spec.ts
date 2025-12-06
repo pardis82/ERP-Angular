@@ -1,8 +1,15 @@
-import { NormalizeDigits } from './normalize-digits';
+import { TestBed } from '@angular/core/testing';
 
-describe('NormalizeDigits', () => {
-  it('should create an instance', () => {
-    const directive = new NormalizeDigits();
-    expect(directive).toBeTruthy();
+import { NormalizeDigitsDirective } from './normalize-digits';
+
+describe('NationalCodeValidationService', () => {
+  let service: NormalizeDigitsDirective;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+
+    service = TestBed.inject(NormalizeDigitsDirective);
+  });
+  it('should be created', () => {
+    expect(service).toBeTruthy();
   });
 });

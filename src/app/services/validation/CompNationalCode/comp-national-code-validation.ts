@@ -16,8 +16,12 @@ export class CompNationalCodeValidationService {
       return { isValid: false, unmet };
     }
     const CleanedCode = String(code).trim();
+    if (/\D/.test(CleanedCode)) {
+      unmet.push('شناسه ملی شرکت نامعتبراست');
+      return { isValid: false, unmet };
+    }
     if (!/^\d{11}$/.test(CleanedCode)) {
-      unmet.push('کد ملی باید یازده رقم باشد');
+      unmet.push('شناسه ملی شرکت باید یازده رقم باشد');
       return { isValid: false, unmet };
     }
     if (/^(\d)\1{10}$/.test(CleanedCode)) {

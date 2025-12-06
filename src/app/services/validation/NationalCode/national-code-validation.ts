@@ -18,6 +18,10 @@ export class NationalCodeValidationService {
     }
 
     const cleanCode = String(code).trim();
+    if (/\D/.test(cleanCode)) {
+      unmet.push('کد ملی نامعتبر');
+      return { isValid: false, unmet };
+    }
 
     if (!/^\d{10}$/.test(cleanCode)) {
       unmet.push('کد ملی باید ۱۰ رقم باشد');

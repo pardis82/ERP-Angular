@@ -1,15 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NationalCodeValidation } from './national-code-validation';
+import {NationalCodeValidationService} from './national-code-validation'
 
-describe('NationalCodeValidation', () => {
-  let service: NationalCodeValidation;
-
+describe('NationalCodeValidationService', () => {
+  let service: NationalCodeValidationService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(NationalCodeValidation);
-  });
 
+    service = TestBed.inject(NationalCodeValidationService);
+  });
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
