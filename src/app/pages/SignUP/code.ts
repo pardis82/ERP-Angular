@@ -35,15 +35,15 @@ export class CodePage {
 
   handleVerification(result: { success: boolean; code: string }): void {
     if (result.success) {
-      setTimeout(() => {
-        this.isLoading = true;
-      }, 700);
-      // 1. Set loading state to true immediately upon success
+      // 1. ✅ Set loading state IMMEDIATELY to show the success message
+      this.isLoading = true;
+
+      // 2. ✅ Use a single setTimeout for the combined delay before navigating
+      const REDIRECT_DELAY_MS = 2000; // Total time to show success message
 
       setTimeout(() => {
-        // 2. After the delay, navigate
         this.router.navigate(['/UserProfile']);
-      }, 2000);
+      }, REDIRECT_DELAY_MS);
     }
   }
 }

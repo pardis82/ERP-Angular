@@ -35,5 +35,6 @@ export class legalPersonForm implements OnInit, OnDestroy {
     this.parentForm.removeControl('username');
     this.parentForm.removeControl('password');
     this.parentForm.removeControl('phonenumber');
+    this.parentForm.updateValueAndValidity();
   }
 }

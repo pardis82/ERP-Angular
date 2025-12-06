@@ -53,8 +53,11 @@ export class UserProfile implements OnInit {
     this.selectedUserType.set(this.userProfileForm.get('userType')?.value);
     // Listen to form value changes and update the signal
     this.userProfileForm.valueChanges.subscribe((values) => {
-      const userType = values.userType;
-      this.selectedUserType.set(values.userType);
+      const rawUserType = values.userType;
+      const userType =
+        typeof rawUserType === 'object' && rawUserType !== null ? rawUserType.value : rawUserType;
+
+      this.selectedUserType.set(userType);
       const getControlValue = (name: string): string => {
         const control = this.userProfileForm.get(name);
         // If the control exists AND it has a value, return it, otherwise return empty string

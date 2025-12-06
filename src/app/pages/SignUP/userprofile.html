@@ -5,19 +5,17 @@
             [options]="UserTypeOptions" backgroundColor="#F1F3E0">
         </app-select>
 
-        <div *ngIf="selectedUserType() === 1" [attr.key]="1">
-            <app-natural-person-form [parentForm]="userProfileForm" [usernameUnmetRules]="usernameUnmetRules()"
-                [passwordUnmetRules]="passwordUnmetRules()" [nationalUnmetRules]="nationalUnmetRules()"
-                [phoneUnmetRules]="phoneUnmetRules()" [passwordScore]="passwordScore()" [passwordColor]="passwordColor()"
-                [passwordPercentage]="passwordPercentage()"></app-natural-person-form>
-        </div>
+        @if (selectedUserType() === 1) {
+        <app-natural-person-form [parentForm]="userProfileForm" [usernameUnmetRules]="usernameUnmetRules()"
+            [passwordUnmetRules]="passwordUnmetRules()" [nationalUnmetRules]="nationalUnmetRules()"
+            [phoneUnmetRules]="phoneUnmetRules()" [passwordScore]="passwordScore()" [passwordColor]="passwordColor()"
+            [passwordPercentage]="passwordPercentage()"></app-natural-person-form>
+        } @else if (selectedUserType() === 2) {
+        <app-legal-person-form [parentForm]="userProfileForm" [usernameUnmetRules]="usernameUnmetRules()"
+            [passwordUnmetRules]="passwordUnmetRules()" [compnationalUnmetRules]="compnationalUnmetRules()"
+            [phoneUnmetRules]="phoneUnmetRules()" [passwordScore]="passwordScore()" [passwordColor]="passwordColor()"
+            [passwordPercentage]="passwordPercentage()"></app-legal-person-form>
+        }
 
-        <div *ngIf="selectedUserType() === 2" [attr.key]="2">
-            <app-legal-person-form [parentForm]="userProfileForm" [usernameUnmetRules]="usernameUnmetRules()"
-                [passwordUnmetRules]="passwordUnmetRules()" [compnationalUnmetRules]="compnationalUnmetRules()"
-                [phoneUnmetRules]="phoneUnmetRules()" [passwordScore]="passwordScore()" [passwordColor]="passwordColor()"
-                [passwordPercentage]="passwordPercentage()"></app-legal-person-form>
-        </div>
-        
-        </form>
+    </form>
 </div>

@@ -66,7 +66,7 @@ export class SelectField implements ControlValueAccessor {
   }
 
   registerOnChange(fn: any): void {
-    this.onChange(fn);
+    this.onChange = fn;
   }
 
   registerOnTouched(fn: any): void {
@@ -123,6 +123,8 @@ export class SelectField implements ControlValueAccessor {
       const newValue = [...selected];
       this.value.set(newValue);
       this.valueChange.emit(newValue);
+      this.onChange(newValue);
+      this.onTouched();
     } else {
       const newValue = { ...option };
       this.value.set(newValue);
@@ -135,16 +137,16 @@ export class SelectField implements ControlValueAccessor {
 
   handleSelectAll() {
     if (!this.multiple()) return;
-    let newValue: SelectValue
+    let newValue: SelectValue;
     if (this.areAllSelected()) {
-     newValue = []
+      newValue = [];
     } else {
       newValue = this.options().slice();
     }
     this.value.set(newValue);
-    this.valueChange.emit(newValue)
-    this.onChange(newValue)
-    this.onTouched()
+    this.valueChange.emit(newValue);
+    this.onChange(newValue);
+    this.onTouched();
   }
 
   isSelected(option: Option): boolean {
