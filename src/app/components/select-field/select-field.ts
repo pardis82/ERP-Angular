@@ -7,9 +7,10 @@ import {
   ElementRef,
   computed,
   signal,
+  forwardRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface Option {
   value: string | number;
@@ -17,16 +18,23 @@ export interface Option {
 }
 
 export type SelectValue = Option | Option[] | null;
+const SELECT_FIELD_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => SelectField),
+  multi: true,
+};
 
 @Component({
   selector: 'app-select',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './select-field.html',
+  providers: [SELECT_FIELD_VALUE_ACCESSOR],
 })
-export class SelectField {
+export class SelectField implements ControlValueAccessor {
   // ----- SIGNAL INPUTS -----
   options = input<Option[]>([]);
+  backgroundColor = input<string>('');
   label = input<string>('');
   placeholder = input<string>('انتخاب کنید');
   errorMessage = input<string>('');
@@ -49,6 +57,21 @@ export class SelectField {
   focused = signal(false);
 
   constructor(private host: ElementRef<HTMLElement>) {}
+
+  onChange = (_: any) => {};
+  onTouched = () => {};
+
+  writeValue(obj: SelectValue): void {
+    this.value.set(obj);
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange(fn);
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
 
   // ----- COMPUTEDS -----
   filteredOptions = computed(() => {
@@ -81,12 +104,14 @@ export class SelectField {
   toggleOpen() {
     this.open.update((v) => !v);
     if (!this.open()) this.query.set('');
+    this.onTouched();
   }
 
   close() {
     this.open.set(false);
     this.query.set('');
     this.focused.set(false);
+    this.onTouched();
   }
 
   toggleOption(option: Option) {
@@ -95,26 +120,31 @@ export class SelectField {
       const idx = selected.findIndex((s) => s.value === option.value);
       if (idx >= 0) selected.splice(idx, 1);
       else selected.push(option);
-
-      this.value.set([...selected]);
-      this.valueChange.emit([...selected]);
+      const newValue = [...selected];
+      this.value.set(newValue);
+      this.valueChange.emit(newValue);
     } else {
-      this.value.set({ ...option });
-      this.valueChange.emit({ ...option });
+      const newValue = { ...option };
+      this.value.set(newValue);
+      this.valueChange.emit(newValue);
       this.close();
+      this.onChange(newValue);
+      this.onTouched();
     }
   }
 
   handleSelectAll() {
     if (!this.multiple()) return;
+    let newValue: SelectValue
     if (this.areAllSelected()) {
-      this.value.set([]);
-      this.valueChange.emit([]);
+     newValue = []
     } else {
-      const copy = this.options().slice();
-      this.value.set(copy);
-      this.valueChange.emit(copy);
+      newValue = this.options().slice();
     }
+    this.value.set(newValue);
+    this.valueChange.emit(newValue)
+    this.onChange(newValue)
+    this.onTouched()
   }
 
   isSelected(option: Option): boolean {

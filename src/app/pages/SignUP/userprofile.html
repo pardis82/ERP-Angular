@@ -1,23 +1,23 @@
 <div dir="rtl" class="mt-2 p-4 flex justify-center">
     <form [formGroup]="userProfileForm" class="grid lg:grid-cols-1 gap-4 w-80">
-        <app-text-field formControlName="username" label="نام کاربری" placeholder="نام کاربری خود را وارد کنید"
-            backgroundColor="#F1F3E0" type="username" [showValidationUI]="true" [unmetRules]="usernameUnmetRules()"
-            [success]="usernameUnmetRules().length===0">
-        </app-text-field>
 
-        <app-text-field formControlName="password" label="رمز عبور" placeholder="رمز عبور خود را وارد کنید"
-            helperText="رمز عبور باید حداقل 8 کاراکتر و شامل یک حرف بزرگ ، یک حرف کوچک ، یک عدد  و یک کاراکتر خاص (@ $ & ! # ? %)"
-            backgroundColor="#F1F3E0" type="password" [showValidationUI]="true" [passwordScore]="passwordScore()"
-            [passwordColor]="passwordColor()" [passwordPercentage]="passwordPercentage()"
-            [unmetRules]="passwordUnmetRules()" [success]="passwordUnmetRules().length===0" [errorMessage]="">
-        </app-text-field>
+        <app-select formControlName="userType" label="نوع کاربر" placeholder="لطفا نوع کاربر خود را انتخاب کنید"
+            [options]="UserTypeOptions" backgroundColor="#F1F3E0">
+        </app-select>
 
-        <app-text-field formControlName="nationalcode" label="کد ملی" placeholder="مثلا: 7111011015" type="nationalcode"
-            backgroundColor="#F1F3E0" [showValidationUI]="true" [unmetRules]="nationalUnmetRules()"
-            [success]="nationalUnmetRules().length===0" [errorMessage]=""></app-text-field>
+        <div *ngIf="selectedUserType() === 1" [attr.key]="1">
+            <app-natural-person-form [parentForm]="userProfileForm" [usernameUnmetRules]="usernameUnmetRules()"
+                [passwordUnmetRules]="passwordUnmetRules()" [nationalUnmetRules]="nationalUnmetRules()"
+                [phoneUnmetRules]="phoneUnmetRules()" [passwordScore]="passwordScore()" [passwordColor]="passwordColor()"
+                [passwordPercentage]="passwordPercentage()"></app-natural-person-form>
+        </div>
 
-        <app-text-field formControlName="phonenumber" label="شماره تلفن" placeholder="مثلا:  09026756849"
-            type="phonenumber" backgroundColor="#F1F3E0" [showValidationUI]="true" [unmetRules]="phoneUnmetRules()"
-            [success]="phoneUnmetRules().length===0" [errorMessage]=""></app-text-field>
-    </form>
+        <div *ngIf="selectedUserType() === 2" [attr.key]="2">
+            <app-legal-person-form [parentForm]="userProfileForm" [usernameUnmetRules]="usernameUnmetRules()"
+                [passwordUnmetRules]="passwordUnmetRules()" [compnationalUnmetRules]="compnationalUnmetRules()"
+                [phoneUnmetRules]="phoneUnmetRules()" [passwordScore]="passwordScore()" [passwordColor]="passwordColor()"
+                [passwordPercentage]="passwordPercentage()"></app-legal-person-form>
+        </div>
+        
+        </form>
 </div>
