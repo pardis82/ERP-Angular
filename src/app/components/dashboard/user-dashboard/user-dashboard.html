@@ -1,0 +1,24 @@
+<h2>Status: {{statusMessage}}</h2>
+<button (click)="createUsers()" [disabled]="isLoading">add a User</button>
+@if (ceratedUser) {
+<div>
+    created user : {{ceratedUser.name}}
+</div>
+}
+<div>
+    @for (user of userList; track $index) {
+    <li>
+        {{user.id}}-{{user.name}}
+    </li>
+
+    }
+</div>
+
+<div class="bg-gray-100 mt-10">
+    @for (post of postList; track $index) {
+    <li>
+        {{post.title}}
+    </li>
+
+    }
+</div>

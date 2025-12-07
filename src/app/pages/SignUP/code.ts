@@ -42,7 +42,7 @@ export class CodePage {
       const REDIRECT_DELAY_MS = 2000; // Total time to show success message
 
       setTimeout(() => {
-        this.router.navigate(['/UserProfile']);
+        this.router.navigate(['/SignUp']);
       }, REDIRECT_DELAY_MS);
     }
   }

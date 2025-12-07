@@ -8,9 +8,15 @@ import { RouterOutlet, RouterLink } from '@angular/router';
       <div class="flex justify center">
         <a class="text-blue-500 hover:text-blue-700" [routerLink]="'/Login'">Login Page</a>
         <a class="ml-10 text-blue-500 hover:text-blue-700" [routerLink]="'/Code'">Code</a>
+        <a class="ml-10 text-blue-500 hover:text-blue-700" [routerLink]="'/'">Api practice</a>
+        <a class="ml-10 text-blue-500 hover:text-blue-700" [routerLink]="'UserProfile'"
+          >User Profile</a
+        >
       </div>
     </header>
 
-    <router-outlet></router-outlet>`,
+    <router-outlet>
+      <section class="flex justify-center"></section>
+    </router-outlet>`,
 })
 export class App {}
