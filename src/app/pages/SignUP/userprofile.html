@@ -2,18 +2,18 @@
     <form [formGroup]="userProfileForm" class="grid lg:grid-cols-1 gap-4 w-80">
 
         <app-select formControlName="userType" label="نوع کاربر" placeholder="لطفا نوع کاربر خود را انتخاب کنید"
-            [options]="UserTypeOptions" backgroundColor="#F1F3E0">
-        </app-select>
+            [options]="UserTypeOptions" backgroundColor="#F1F3E0" trackBy="value"> </app-select>
 
         @if (selectedUserType() === 1) {
         <app-natural-person-form [parentForm]="userProfileForm" [usernameUnmetRules]="usernameUnmetRules()"
             [passwordUnmetRules]="passwordUnmetRules()" [nationalUnmetRules]="nationalUnmetRules()"
             [phoneUnmetRules]="phoneUnmetRules()" [passwordScore]="passwordScore()" [passwordColor]="passwordColor()"
             [passwordPercentage]="passwordPercentage()"></app-natural-person-form>
-        } @else if (selectedUserType() === 2) {
-        <app-legal-person-form [parentForm]="userProfileForm" [usernameUnmetRules]="usernameUnmetRules()"
-            [passwordUnmetRules]="passwordUnmetRules()" [compnationalUnmetRules]="compnationalUnmetRules()"
-            [phoneUnmetRules]="phoneUnmetRules()" [passwordScore]="passwordScore()" [passwordColor]="passwordColor()"
+        }
+        @if (selectedUserType() === 2 ) { <app-legal-person-form [parentForm]="userProfileForm"
+            [usernameUnmetRules]="usernameUnmetRules()" [passwordUnmetRules]="passwordUnmetRules()"
+            [compnationalUnmetRules]="compnationalUnmetRules()" [phoneUnmetRules]="phoneUnmetRules()"
+            [passwordScore]="passwordScore()" [passwordColor]="passwordColor()"
             [passwordPercentage]="passwordPercentage()"></app-legal-person-form>
         }
 

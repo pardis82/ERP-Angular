@@ -11,10 +11,13 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NestedDropDown } from '../nested-drop-down/nested-drop-down';
 
 export interface Option {
   value: string | number;
   label: string;
+  children?: Option[];
+  isNested?: boolean;
 }
 
 export type SelectValue = Option | Option[] | null;
@@ -27,7 +30,7 @@ const SELECT_FIELD_VALUE_ACCESSOR: any = {
 @Component({
   selector: 'app-select',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NestedDropDown],
   templateUrl: './select-field.html',
   providers: [SELECT_FIELD_VALUE_ACCESSOR],
 })

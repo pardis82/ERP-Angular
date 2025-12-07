@@ -1,0 +1,16 @@
+@if (option().isNested !== false) {
+<li class="relative cursor-default select-none text-sm font-sans text-gray-700" [class.text-purple-600]="isSelected()">
+
+    <div (click)="handleToggle()" role="option" [attr.aria-selected]="isSelected()"
+        class="flex items-center justify-between py-2 px-3 hover:text-purple-600">
+        <span class="block truncate" [class.font-medium]="isSelected()">{{ option().label }}</span>
+
+    </div>
+
+    @if (option().children?.length) {
+    <ul class="sub-options absolute left-full top-0 w-max min-w-[150px] shadow-xl rounded-md border border-gray-200 z-20 list-none p-0 m-0"
+        style="background-color: var(--custom-bg);">
+    </ul>
+    }
+</li>
+}

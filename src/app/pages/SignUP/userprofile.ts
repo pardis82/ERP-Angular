@@ -54,8 +54,12 @@ export class UserProfile implements OnInit {
     // Listen to form value changes and update the signal
     this.userProfileForm.valueChanges.subscribe((values) => {
       const rawUserType = values.userType;
-      const userType =
-        typeof rawUserType === 'object' && rawUserType !== null ? rawUserType.value : rawUserType;
+      const userType: number | null =
+        typeof rawUserType === 'object' && rawUserType !== null && 'value' in rawUserType
+          ? (rawUserType.value as number) // Extract the number from the Option object
+          : (rawUserType as number | null); // Use the number directly
+
+      this.selectedUserType.set(userType);
 
       this.selectedUserType.set(userType);
       const getControlValue = (name: string): string => {
@@ -63,6 +67,7 @@ export class UserProfile implements OnInit {
         // If the control exists AND it has a value, return it, otherwise return empty string
         return control && control.value !== null ? String(control.value) : '';
       };
+
       const nationalCodeValue = getControlValue('nationalcode');
       const compNationalCodeValue = getControlValue('compnationalcode');
       this.formValues.set({

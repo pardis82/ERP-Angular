@@ -96,24 +96,13 @@
         }
 
         <!-- Options -->
-        @for (option of filteredOptions(); track option) {
-        <div (click)="toggleOption(option)" role="option" [attr.aria-selected]="isSelected(option)"
-          class="relative cursor-default select-none py-2 px-3 text-sm font-sans hover:text-purple-600 text-gray-700 flex items-center justify-between"
-          [class.text-purple-600]="isSelected(option)">
-          <span [class.font-medium]="isSelected(option)" class="block truncate">{{ option.label }}</span>
-          @if (multiple()) {
-          <div class="flex items-center justify-center w-5 h-5 border-2 rounded"
-            [class.bg-purple-600]="isSelected(option)" [class.border-purple-600]="isSelected(option)"
-            [class.border-gray-300]="!isSelected(option)">
-            @if (isSelected(option)) {
-            <svg class="h-3 w-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M20 6L9 17l-5-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            }
-          </div>
+        <ul class="list-none p-0 m-0">
+          @for (option of filteredOptions(); track option.value) {
+          <app-nested-drop-down [option]="option" [value]="value()" [multiple]="multiple()"
+            (finalSelectedOption)="toggleOption($event)">
+          </app-nested-drop-down>
           }
-        </div>
-        }
+        </ul>
       </div>
       }
     </div>
