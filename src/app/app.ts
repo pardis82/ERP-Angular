@@ -12,6 +12,9 @@ import { RouterOutlet, RouterLink } from '@angular/router';
         <a class="ml-10 text-blue-500 hover:text-blue-700" [routerLink]="'UserProfile'"
           >User Profile</a
         >
+        <a class="ml-10 text-blue-500 hover:text-blue-700" [routerLink]="'/Auth'"
+          >Log In Sign Up toggle</a
+        >
       </div>
     </header>
 

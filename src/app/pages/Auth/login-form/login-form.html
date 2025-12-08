@@ -1,0 +1,24 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+
+    <app-text-field formControlName="username" [showValidationUI]="false" label="نام کاربری" backgroundColor="#f9fafb"
+        type="username">
+    </app-text-field>
+
+    <app-text-field formControlName="password" [showValidationUI]="false" label="رمز عبور" backgroundColor="#f9fafb"
+        type="password">
+    </app-text-field>
+
+    <div class="flex items-center gap-2">
+        <input #chkBox type="checkbox" id="remember"
+            class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
+            (change)="rememberMe.set(chkBox.checked)" />
+        <label for="remember" class="text-sm text-gray-600 cursor-pointer select-none">
+            مرا به خاطر بسپار
+        </label>
+    </div>
+
+    <button type="submit" [disabled]="!loginForm.valid"
+        class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg transform active:scale-95">
+        ورود به سیستم
+    </button>
+</form>

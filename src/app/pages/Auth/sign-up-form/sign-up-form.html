@@ -1,0 +1,23 @@
+<form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+
+    <app-text-field formControlName="nationalCode" label="کد ملی" placeholder="مثلا 0250121311"
+        backgroundColor="#f9fafb" type="nationalcode" [showValidationUI]="true" [unmetRules]="nationalCodeUnmet()"
+        [success]="nationalCodeUnmet().length === 0 && (signUpForm.get('nationalCode')?.dirty ?? false)">
+    </app-text-field>
+
+    <app-text-field formControlName="username" label="نام کاربری" placeholder="نام کاربری خود را وارد کنید"
+        backgroundColor="#f9fafb" type="username" [showValidationUI]="true" [unmetRules]="usernameUnmet()"
+        [success]="usernameUnmet().length === 0 && (signUpForm.get('username')?.dirty ?? false)">
+    </app-text-field>
+
+    <app-text-field formControlName="password" label="رمز عبور" placeholder="رمز عبور خود را وارد کنید"
+        backgroundColor="#f9fafb" type="password" [showValidationUI]="true" [passwordScore]="passwordScore()"
+        [passwordColor]="passwordColor()" passwordPercentage="passwordPercentage()" [unmetRules]="passwordUnmet()"
+        [success]="passwordUnmet().length === 0 && (signUpForm.get('password')?.dirty ?? false)">
+    </app-text-field>
+
+    <button type="submit" [disabled]="!signUpForm.valid"
+        class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg active:scale-95 mt-2">
+        ثبت نام نهایی
+    </button>
+</form>

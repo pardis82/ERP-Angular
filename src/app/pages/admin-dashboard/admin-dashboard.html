@@ -1,0 +1,16 @@
+<button
+  (click)="testError()"
+  class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow"
+>
+  💥 تست انفجار
+</button>
+<button *appHasPermission="'users:delete'" class="bg-red-500 text-white px-4 py-2 rounded">
+  حذف کاربر (فقط ادمین میبینه)
+</button>
+
+<button
+  *appHasPermission="['users:view', 'dashboard:view']"
+  class="bg-blue-500 text-white px-4 py-2 rounded"
+>
+  دکمه معمولی (همه میبینن)
+</button>

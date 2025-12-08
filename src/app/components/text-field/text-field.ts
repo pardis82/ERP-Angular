@@ -58,7 +58,7 @@ export class TextField implements ControlValueAccessor {
   unmetRules = input<string[]>([]);
   passwordScore = input<number>(0);
   passwordColor = input<string>('');
-  passwordPercentage = input<number>(0);
+  passwordPercentage = input<string>('');
 
   // ----- SIGNAL OUTPUTS -----
   value = model<string>('');

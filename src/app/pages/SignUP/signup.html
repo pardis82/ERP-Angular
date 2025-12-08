@@ -9,7 +9,7 @@
         <app-text-field formControlName="password" label="رمز عبور" placeholder="رمز عبور خود را وارد کنید"
             helperText="رمز عبور باید حداقل 8 کاراکتر و شامل یک حرف بزرگ، یک حرف کوچک، یک عدد، و یک کاراکتر خاص."
             backgroundColor="#F1F3E0" type="password" [showValidationUI]="true" [passwordScore]="passwordScore()"
-            [passwordColor]="passwordColor()" [passwordPercentage]="passwordPercentage()"
+            [passwordColor]="passwordColor()" 
             [unmetRules]="passwordUnmetRules()" [success]="passwordUnmetRules.length === 0">
         </app-text-field>
 

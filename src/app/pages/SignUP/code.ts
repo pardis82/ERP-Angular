@@ -28,18 +28,14 @@ import { CommonModule } from '@angular/common'; // <-- Import CommonModule for n
   `,
 })
 export class CodePage {
-  // New property to control the loading state
   isLoading: boolean = false;
 
   constructor(private router: Router) {}
 
   handleVerification(result: { success: boolean; code: string }): void {
     if (result.success) {
-      // 1. ✅ Set loading state IMMEDIATELY to show the success message
-      this.isLoading = true;
-
-      // 2. ✅ Use a single setTimeout for the combined delay before navigating
-      const REDIRECT_DELAY_MS = 2000; // Total time to show success message
+      this.isLoading = true; 
+      const REDIRECT_DELAY_MS = 2000; 
 
       setTimeout(() => {
         this.router.navigate(['/SignUp']);
