@@ -1,8 +1,7 @@
 <div dir="rtl" class="min-h-screen flex items-center justify-center bg-gray-50">
-    <div
-        class="w-80 h-[520px] overflow-y-auto bg-white p-6 rounded-2xl shadow-xl border border-gray-100 transition-all duration-300">
+    <div class="w-80 h-[520px] bg-white p-6 rounded-2xl shadow-xl border border-gray-100 transition-all duration-300 flex flex-col relative">
 
-        <div class="flex p-1 bg-gray-100 rounded-lg mb-6 relative shrink-0">
+        <div class="flex p-1 bg-gray-100 rounded-lg shrink-0 z-10">
             <button type="button" (click)="switchTo('Login')"
                 class="w-1/2 py-2 text-sm font-bold rounded-md transition-all duration-300 ease-in-out"
                 [class]="isInLoginMode() ? 'bg-white text-blue-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'">
@@ -16,63 +15,77 @@
             </button>
         </div>
 
-        <h2 class="text-xl font-bold text-center text-gray-800 mb-6 shrink-0">
+        <div class="flex-grow overflow-y-auto flex flex-col w-full relative">
+
             @if (isInLoginMode()) {
-            <span>خوش آمدید!</span>
-            } @else {
-            <span>ساخت حساب کاربری</span>
-            }
-        </h2>
-
-        @if (isInLoginMode()) {
-        <div class="animate-fade-in-up">
-            <app-login-form (loginSubmit)="handleLoginSubmit($event)"></app-login-form>
-        </div>
-        }
-
-        @if (isInPhoneEntryMode()) {
-        <form [formGroup]="phoneForm" (ngSubmit)="handlePhoneSubmit()" class="space-y-4 animate-fade-in-up mt-15">
-            <app-text-field formControlName="phoneNumber" label="شماره تلفن" backgroundColor="#f9fafb"
-                type="phonenumber" placeholder="مثلا 09391815245" [showValidationUI]="true" [unmetRules]="phoneUnmet()"
-                [success]="phoneUnmet().length === 0 && (phoneForm.get('phoneNumber')?.dirty ?? false)">
-            </app-text-field>
-
-            <button type="submit" [disabled]="phoneUnmet().length > 0 || !phoneForm.get('phoneNumber')?.value"
-                class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg active:scale-95">
-                دریافت کد تایید
-            </button>
-        </form>
-        }
-
-        @if (isInCodeVerificationMode()) {
-        <div class="flex flex-col items-center animate-fade-in-up">
-            <button (click)="goBack()"
-                class="self-start text-xs text-gray-400 mb-4 hover:text-blue-600 flex items-center">
-                <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
-                    </path>
-                </svg>
-                تغییر شماره
-            </button>
-
-            <p class="text-sm text-center text-gray-600 mb-6">
-                کد ارسال شده به {{ PhoneNumber() }} را وارد کنید.
-            </p>
-
-            @if (!isVerificationLoading()) {
-            <app-verification-code [boxNumber]="4" [maxLength]="1" [verificationCode]="verificationCodeSent()"
-                (verificationComplete)="handleVerificationCode($event)"></app-verification-code>
-            } @else {
-            <div class="mt-4 animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto">
+            <div class="animate-fade-in-up flex-grow flex flex-col justify-center pb-8">
+                <h2 class="text-xl font-bold text-center text-gray-800 mb-6">
+                    خوش آمدید!
+                </h2>
+                <app-login-form (loginSubmit)="handleLoginSubmit($event)"></app-login-form>
             </div>
             }
-        </div>
-        }
 
-        @if (isInUserProfileMode()) {
-        <div class="animate-fade-in-up">
-            <app-sign-up-form (formSubmit)="handleFinalSignUp($event)"></app-sign-up-form>
+            @if (isInPhoneEntryMode()) {
+            <div class="animate-fade-in-up flex-grow flex flex-col justify-center pb-8">
+                <h2 class="text-xl font-bold text-center text-gray-800 mb-6">
+                    ساخت حساب کاربری
+                </h2>
+                
+                <form [formGroup]="phoneForm" (ngSubmit)="handlePhoneSubmit()" class="space-y-4">
+                    <app-text-field formControlName="phoneNumber" label="شماره تلفن" backgroundColor="#f9fafb"
+                        type="phonenumber" placeholder="مثلا 09391815245" [showValidationUI]="true"
+                        [unmetRules]="phoneUnmet()"
+                        [success]="phoneUnmet().length===0">
+                    </app-text-field>
+
+                    <button type="submit" [disabled]="phoneUnmet().length > 0 || !phoneForm.get('phoneNumber')?.value"
+                        class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg active:scale-95">
+                        دریافت کد تایید
+                    </button>
+                </form>
+            </div>
+            }
+
+            @if (isInCodeVerificationMode()) {
+            <div class="animate-fade-in-up flex-grow flex flex-col justify-center items-center pb-8">
+                <h2 class="text-xl font-bold text-center text-gray-800 mb-2">
+                    تایید شماره
+                </h2>
+                
+                <p class="text-sm text-center text-gray-600 mb-6">
+                    کد ارسال شده به {{ PhoneNumber() }} را وارد کنید.
+                </p>
+
+                @if (!isVerificationLoading()) {
+                <app-verification-code [boxNumber]="4" [maxLength]="1" [verificationCode]="verificationCodeSent()"
+                    (verificationComplete)="handleVerificationCode($event)"></app-verification-code>
+                } @else {
+                <div class="mt-4 animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto">
+                </div>
+                }
+
+                <button (click)="goBack()"
+                    class="mt-6 text-xs text-gray-400 hover:text-blue-600 flex items-center transition-colors">
+                    <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14 5l7 7m0 0l-7 7m7-7H3">
+                        </path>
+                    </svg>
+                    تغییر شماره
+                </button>
+            </div>
+            }
+
+            @if (isInUserProfileMode()) {
+            <div class="animate-fade-in-up pt-4">
+                <h2 class="text-xl font-bold text-center text-gray-800 mb-6">
+                    تکمیل اطلاعات
+                </h2>
+                <app-sign-up-form (formSubmit)="handleFinalSignUp($event)"></app-sign-up-form>
+            </div>
+            }
+
         </div>
-        }
     </div>
 </div>
