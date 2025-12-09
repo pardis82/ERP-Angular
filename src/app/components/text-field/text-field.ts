@@ -54,6 +54,7 @@ export class TextField implements ControlValueAccessor {
 
   //---UI validation helpers---
   showValidationUI = input<boolean>(true);
+  isStatic= input<boolean>(false);
   success = input<boolean>(false);
   unmetRules = input<string[]>([]);
   passwordScore = input<number>(0);
@@ -78,7 +79,7 @@ export class TextField implements ControlValueAccessor {
   private isDisabled = false;
 
   //-----Computed signals------
-  float = computed(() => this.hasValue() || this.isFocused());
+  float = computed(() => this.hasValue() || this.isFocused()|| this.isStatic());
   hasValue = computed(() => {
     const v = this.value() ?? this.defaultValue() ?? '';
     return v.length > 0;
@@ -120,8 +121,10 @@ export class TextField implements ControlValueAccessor {
       classes.push('text-red-500');
     } else if (this.showValidationUI() && this.hasValue() && this.success()) {
       classes.push('text-green-600');
-    } else if (shouldFloat) {
+    } else if (this.isFocused()) {
       classes.push('text-purple-600');
+    } else {
+      classes.push('text-gray-500')
     }
 
     return classes;

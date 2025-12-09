@@ -1,11 +1,11 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
 
     <app-text-field formControlName="username" [showValidationUI]="false" label="نام کاربری" backgroundColor="#f9fafb"
-        type="username">
+        type="username" [isStatic]="false">
     </app-text-field>
 
     <app-text-field formControlName="password" [showValidationUI]="false" label="رمز عبور" backgroundColor="#f9fafb"
-        type="password">
+        type="password" [isStatic]="false">
     </app-text-field>
 
     <div class="flex items-center justify-between p-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm w-full">
