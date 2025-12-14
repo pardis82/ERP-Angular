@@ -9,6 +9,7 @@ import {
   ElementRef,
   QueryList,
   OnInit,
+  model,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -34,6 +35,10 @@ export class VerificationCode {
         .fill(null)
         .map(() => new FormControl(''));
       this.verificationValues.set(newControls);
+      const code = this.verificationCode();
+      if (!code) {
+        this.verificationCode.set('');
+      }
     });
   }
 
@@ -49,7 +54,7 @@ export class VerificationCode {
   containerClassName = input<string>();
   className = input<string>();
   backgroundColor = input<string>(' #ffffffff');
-  verificationCode = input<string>('');
+  verificationCode = model<string>('');
   verificationComplete = output<{ success: boolean; code: string }>();
 
   //اول میایم آرایه boxMaxLength رو میدیم به perbox بعد بررسی میکنیم که آیا آرایه هست یا نه بعد اگر طول ارایه برابر با تعداد باکس ها باشه میاد برای هر ایندکس آرایه ای از تعدادی که داریم میاره

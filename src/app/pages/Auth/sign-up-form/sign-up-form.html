@@ -1,30 +1,52 @@
-<form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+<div class="mt-8">
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+        <div class="flex gap-2 justify-between">
+            <div class="w-2/5">
+                <app-text-field formControlName="firstName" label="نام" placeholder="نام خود را وارد کنید"
+                    [isStatic]="false" backgroundColor="#f9fafb" type="firstName" [showValidationUI]="true"
+                    [unmetRules]="firstnameUnmet()"
+                    [success]="firstnameUnmet().length === 0 && (signUpForm.get('firstName')?.dirty ?? false)">
+                </app-text-field>
+            </div>
+            <div class="w-3/5">
+                <app-text-field formControlName="lastName" label="نام خانوادگی"
+                    placeholder="نام خانوادگی خود را وارد کنید" [isStatic]="false" backgroundColor="#f9fafb"
+                    type="lastName" [showValidationUI]="true" [unmetRules]="lastnameUnmet()"
+                    [success]="lastnameUnmet().length === 0 && (signUpForm.get('lastName')?.dirty ?? false)">
+                </app-text-field>
+            </div>
+        </div>
+        <app-text-field formControlName="nationalCode" label="کد ملی" placeholder="مثلا 0250121311" [isStatic]="false"
+            backgroundColor="#f9fafb" type="nationalcode" [showValidationUI]="true" [unmetRules]="nationalCodeUnmet()"
+            [success]="nationalCodeUnmet().length === 0 && (signUpForm.get('nationalCode')?.dirty ?? false)">
+        </app-text-field>
 
-    <app-text-field formControlName="nationalCode" label="کد ملی" placeholder="مثلا 0250121311"
-        backgroundColor="#f9fafb" type="nationalcode" [showValidationUI]="true" [unmetRules]="nationalCodeUnmet()"
-        [isStatic]="false"
-        [success]="nationalCodeUnmet().length === 0 && (signUpForm.get('nationalCode')?.dirty ?? false)">
-    </app-text-field>
+        <app-text-field formControlName="email" label="پست الکترونیک" placeholder="مثلا test@email.com"
+            [isStatic]="false" backgroundColor="#f9fafb" type="email" [showValidationUI]="true"
+            [unmetRules]="emailUnmet()"
+            [success]="emailUnmet().length===0 && (signUpForm.get('email')?.dirty ?? false)"></app-text-field>
 
-    <app-text-field formControlName="username" label="نام کاربری" placeholder="نام کاربری خود را وارد کنید"
-        [isStatic]="false" backgroundColor="#f9fafb" type="username" [showValidationUI]="true"
-        [unmetRules]="usernameUnmet()"
-        [success]="usernameUnmet().length === 0 && (signUpForm.get('username')?.dirty ?? false)">
-    </app-text-field>
 
-    <app-text-field formControlName="username" label="نام" placeholder="نام کاربری خود را وارد کنید" [isStatic]="true"
-        backgroundColor="#f9fafb" type="username" [showValidationUI]="true" [unmetRules]="usernameUnmet()"
-        [success]="usernameUnmet().length === 0 && (signUpForm.get('username')?.dirty ?? false)">
-    </app-text-field>
+        <app-text-field formControlName="password" label="رمز عبور" placeholder="رمز عبور خود را وارد کنید"
+            helperText="رمز عبور باید شامل:" [isStatic]="false" backgroundColor="#f9fafb" type="password"
+            [showValidationUI]="true" [passwordScore]="passwordScore()" [passwordColor]="passwordColor()"
+            [passwordPercentage]="passwordPercentage()" [unmetRules]="passwordUnmet()"
+            [success]="passwordUnmet().length === 0 ">
+        </app-text-field>
 
-    <app-text-field formControlName="password" label="رمز عبور" placeholder="رمز عبور خود را وارد کنید"
-        backgroundColor="#f9fafb" type="password" [showValidationUI]="true" [passwordScore]="passwordScore()"
-        [passwordColor]="passwordColor()" passwordPercentage="passwordPercentage()" [unmetRules]="passwordUnmet()"
-        [isStatic]="false" [success]="passwordUnmet().length === 0 && (signUpForm.get('password')?.dirty ?? false)">
-    </app-text-field>
 
-    <button type="submit" [disabled]="!signUpForm.valid"
-        class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg active:scale-95 mt-2">
-        ثبت نام نهایی
-    </button>
-</form>
+        <div class="flex items-center gap-3">
+            <input type="checkbox" formControlName="rules" id="rules-check"
+                class="w-4 h-4 text-blue-600 rounded border-gray-400 focus:ring-blue-500 cursor-pointer" />
+            <label for="rules-check" class="text-sm font-medium text-gray-700 cursor-pointer select-none">
+                قوانین و مقررات را مطالعه و پذیرفتم
+            </label>
+        </div>
+
+
+        <button type="submit" [disabled]="!signUpForm.valid"
+            class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg active:scale-95 mt-2">
+            ثبت نام
+        </button>
+    </form>
+</div>

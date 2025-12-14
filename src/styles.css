@@ -4,56 +4,80 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('./assets/YekanBakh-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('./assets/YekanBakh-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('./assets/YekanBakh-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('./assets/YekanBakh-ExtraBlack.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+}
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
-    -webkit-text-fill-color: #1f2937 !important;
+  -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
+  -webkit-text-fill-color: #1f2937 !important;
 
-    transition: background-color 5000s ease-in-out 0s;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 @keyframes onAutoFillStart {
-    from {
-        /**/
-    }
+  from {
+    /**/
+  }
 
-    to {
-        /**/
-    }
+  to {
+    /**/
+  }
 }
 
 @keyframes onAutoFillCancel {
-    from {
-        /**/
-    }
+  from {
+    /**/
+  }
 
-    to {
-        /**/
-    }
+  to {
+    /**/
+  }
 }
 
 /* وقتی اتوفیل شد، این انیمیشن را اجرا کن */
 input:-webkit-autofill {
-    animation-name: onAutoFillStart;
-    /* اون استایل قبلی برای جلوگیری از رنگ زرد رو هم اینجا نگه دار */
-    transition: background-color 5000s ease-in-out 0s;
+  animation-name: onAutoFillStart;
+  /* اون استایل قبلی برای جلوگیری از رنگ زرد رو هم اینجا نگه دار */
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 /* وقتی اتوفیل کنسل شد */
 input:not(:-webkit-autofill) {
-    animation-name: onAutoFillCancel;
+  animation-name: onAutoFillCancel;
 }
 
-
-
 body {
-    /* تنظیم برای فارسی‌سازی */
-    direction: rtl;
-    text-align: right;
-    padding: 0;
-    margin: 0;
-    padding-bottom: 400px;
+  /* تنظیم برای فارسی‌سازی */
+  direction: rtl;
+  text-align: right;
+  padding: 0;
+  margin: 0;
 }

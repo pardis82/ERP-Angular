@@ -1,38 +1,73 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+  <app-text-field
+    formControlName="emailorphone"
+    label="پست الکترونیک یا تلفن همراه"
+    placeholder="مثلا test@email.com یا 0912..."
+    [isStatic]="false"
+    backgroundColor="#f9fafb"
+    [type]="inputType() === 'phonenumber' ? 'tel' : 'email'"
+    [showValidationUI]="true"
+    [unmetRules]="inputErrors()"
+    [success]="
+      inputErrors().length === 0 &&
+      (loginForm.get('emailorphone')?.dirty ?? false) &&
+      loginForm.get('emailorphone')?.value
+    "
+  >
+  </app-text-field>
 
-    <app-text-field formControlName="username" [showValidationUI]="false" label="نام کاربری" backgroundColor="#f9fafb"
-        type="username" [isStatic]="false">
-    </app-text-field>
+  <app-text-field
+    formControlName="password"
+    label="رمز عبور"
+    placeholder="رمز عبور خود را وارد کنید"
+    [isStatic]="false"
+    backgroundColor="#f9fafb"
+    type="password"
+    [showValidationUI]="false"
+  >
+  </app-text-field>
 
-    <app-text-field formControlName="password" [showValidationUI]="false" label="رمز عبور" backgroundColor="#f9fafb"
-        type="password" [isStatic]="false">
-    </app-text-field>
-
-    <div class="flex items-center justify-between p-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm w-full">
-        <div class="flex items-center gap-3">
-            <input type="checkbox" formControlName="captcha" id="captcha-check"
-                class="w-4 h-4 text-blue-600 rounded border-gray-400 focus:ring-blue-500 cursor-pointer" />
-            <label for="captcha-check" class="text-sm font-medium text-gray-700 cursor-pointer select-none">
-                من ربات نیستم
-            </label>
-        </div>
-        <div class="flex flex-col items-center">
-            <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="captcha" class="w-6 h-6 opacity-60">
-            <span class="text-[9px] text-gray-400 mt-1">reCAPTCHA</span>
-        </div>
-    </div>
-
-    <div class="flex items-center gap-2">
-        <input #chkBox type="checkbox" id="remember"
-            class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
-            (change)="rememberMe.set(chkBox.checked)" />
-        <label for="remember" class="text-sm text-gray-600 cursor-pointer select-none">
-            مرا به خاطر بسپار
-        </label>
-    </div>
-
-    <button type="submit" [disabled]="!loginForm.valid"
-        class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg transform active:scale-95">
-        ورود به سیستم
+  <div class="flex justify-start">
+    <button
+      type="button"
+      (click)="ForgotPassClick.emit()"
+      class="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors cursor-pointer"
+    >
+      رمز عبور را فراموش کرده‌اید؟
     </button>
+  </div>
+
+  @if (shouldShowCaptcha()) {
+  <div class="animate-fade-in-up p-4 bg-red-50 border border-red-100 rounded-xl">
+    <p class="text-xs text-red-600 mb-3 font-bold text-center">
+      به دلیل تلاش‌های ناموفق متعدد، لطفا کد امنیتی را وارد کنید.
+    </p>
+
+    <div class="flex gap-3 justify-between items-end">
+      <div class="w-2/3">
+        <app-text-field
+          formControlName="captcha"
+          label="کد امنیتی"
+          placeholder="کد روبرو را وارد کنید"
+          backgroundColor="#ffffff"
+        >
+        </app-text-field>
+      </div>
+
+      <div
+        class="w-1/3 h-[48px] mb-[2px] bg-gray-200 rounded-lg flex items-center justify-center select-none tracking-widest font-mono font-bold text-xl text-gray-600 rotate-2"
+      >
+        8372
+      </div>
+    </div>
+  </div>
+  }
+
+  <button
+    type="submit"
+    [disabled]="!loginForm.valid"
+    class="w-full py-3 px-4 mt-2 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg active:scale-95"
+  >
+    ورود به سیستم
+  </button>
 </form>

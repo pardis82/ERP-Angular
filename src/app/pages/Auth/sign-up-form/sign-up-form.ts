@@ -1,9 +1,11 @@
 import { Component, computed, inject, output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TextField } from '../../../components/text-field/text-field';
-import { PasswordValidationService } from '../../../services/validation/Password/password-validation';
-import { UserNameValidationService } from '../../../services/validation/UserName/user-name-validation';
-import { NationalCodeValidationService } from '../../../services/validation/NationalCode/national-code-validation';
+import { PasswordValidationService } from '../../../services/validation/pass-validation';
+import { EmailValidationService } from '../../../services/validation/email-validation';
+import { NationalCodeValidationService } from '../../../services/validation/national-code-validation';
+import { NameValidationService } from '../../../services/validation/name-validation';
+import { LastNameValidationService } from '../../../services/validation/lastname-validation-service';
 
 @Component({
   selector: 'app-sign-up-form',
@@ -13,55 +15,63 @@ import { NationalCodeValidationService } from '../../../services/validation/Nati
 })
 export class SignUpForm {
   private fb = inject(FormBuilder);
-  // Inject validation services if they exist
-  private passValidation = inject(PasswordValidationService); 
-  private userValidation = inject(UserNameValidationService);
-  private nationalCodeValidation= inject(NationalCodeValidationService)
+  private passValidation = inject(PasswordValidationService);
+  private nationalCodeValidation = inject(NationalCodeValidationService);
+  private emailValidation = inject(EmailValidationService);
+  private nameValidation = inject(NameValidationService);
+  private lastnameValidation = inject(LastNameValidationService);
 
   public formSubmit = output<any>();
   signUpForm: FormGroup;
 
   // Signals for real-time validation feedback
   public passwordScore = signal(0);
-  public passwordColor= signal('');
-  public passwordPercentage= signal(0);
+  public passwordColor = signal('');
+  public passwordPercentage = signal(0);
   public passwordUnmet = signal<string[]>([]);
-  public usernameUnmet = signal<string[]>([]);
-  public nationalCodeUnmet = signal<string[]>([])
+  public emailUnmet = signal<string[]>([]);
+  public nationalCodeUnmet = signal<string[]>([]);
+  public firstnameUnmet = signal<string[]>([]);
+  public lastnameUnmet = signal<string[]>([]);
 
   constructor() {
     this.signUpForm = this.fb.group({
-      username: ['', [Validators.required]],
-      nationalCode: ['', [Validators.required]], 
-      password: ['', [Validators.required,]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      nationalCode: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+      rules: [false, [Validators.requiredTrue]],
     });
-
+    this.updateValidationSignals(this.signUpForm.value);
     // Listen to changes to update validation signals
-    this.signUpForm.valueChanges.subscribe(val => {
-        this.updateValidationSignals(val);
+    this.signUpForm.valueChanges.subscribe((val) => {
+      this.updateValidationSignals(val);
     });
   }
 
   updateValidationSignals(val: any) {
-    // 1. Validate Password using your service
-    if (val.password) {
-        const passResult = this.passValidation.validatePassword(val.password);
-        this.passwordScore.set(passResult.extra.score);
-        this.passwordColor.set(passResult.extra.color);
-        this.passwordPercentage.set(passResult.extra.percentage)
-        this.passwordUnmet.set(passResult.helper);
+    if (val.firstName) {
+      const firstNameResult = this.nameValidation.validateFirstName(val.firstName);
+      this.firstnameUnmet.set(firstNameResult.unmet);
     }
-
-    // 2. Validate Username
-    if (val.username) {
-        const userResult = this.userValidation.validateUsername(val.username);
-        this.usernameUnmet.set(userResult.unmet);
+    if (val.lastName) {
+      const lastNameResult = this.lastnameValidation.validateLastName(val.lastName);
+      this.lastnameUnmet.set(lastNameResult.unmet);
     }
-
-    if(val.nationalCode){
-      const nationalCodeResult= this.nationalCodeValidation.validateNationalCode(val.nationalCode);
-      this.nationalCodeUnmet.set(nationalCodeResult.unmet)
+    if (val.nationalCode) {
+      const nationalCodeResult = this.nationalCodeValidation.validateNationalCode(val.nationalCode);
+      this.nationalCodeUnmet.set(nationalCodeResult.unmet);
     }
+    if (val.email) {
+      const emailResult = this.emailValidation.validateEmail(val.email);
+      this.emailUnmet.set(emailResult.unmet);
+    }
+    const passResult = this.passValidation.validatePassword(val.password);
+    this.passwordScore.set(passResult.extra.score);
+    this.passwordColor.set(passResult.extra.color);
+    this.passwordPercentage.set(passResult.extra.percentage);
+    this.passwordUnmet.set(passResult.helper);
   }
 
   onSubmit() {

@@ -1,20 +1,20 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, switchAll, switchMap, tap } from 'rxjs';
 import { User } from '../models/user';
-import { environment } from '../../environments/environment.development';
 import { apiEndpoints } from '../config/api-endpoints';
 import { storageKeys } from '../config/storage-keys';
 import { routePaths } from '../config/route-paths';
+import { BaseApi } from '../services/core/base-api';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly router = inject(Router);
-  private readonly http = inject(HttpClient);
   public currentUser = signal<User | null>(null);
   private _isRefreshing = false;
   private _accessTokenSubject = new BehaviorSubject<string | null>(null);
+  api = inject(BaseApi);
 
   constructor() {
     const storedUser = localStorage.getItem(storageKeys.userInfo);
@@ -66,25 +66,26 @@ export class AuthService {
     }
   }
   fetchCurrentUser() {
-    this.http.get<User>(`${environment.apiUrl}/${apiEndpoints.auth.me}`).subscribe({
+    return this.api.get<User>(apiEndpoints.auth.me).subscribe({
       next: (response) => {
         this.currentUser.set(response);
         localStorage.setItem(storageKeys.userInfo, JSON.stringify(response));
       },
-      // error: () => this.logout(),
     });
   }
 
-  login(data: { username: string; password: string }, rememberMe: boolean) {
-    const url = `${environment.apiUrl}/${apiEndpoints.auth.login}`;
-    console.log('Final Login URL:', url);
-    return this.http.post<any>(url, data).pipe(
+  login(
+    data: { emailorphone: string; password: string },
+    rememberMe: boolean,
+    context?: HttpContext
+  ) {
+    return this.api.post<any>(apiEndpoints.auth.login, data, { context: context }).pipe(
       switchMap((response) => {
         this.saveToken(
           { refreshToken: response.refreshToken, accessToken: response.accessToken },
           rememberMe
         );
-        return this.http.get<User>(`${environment.apiUrl}/${apiEndpoints.auth.me}`);
+        return this.api.get<User>(apiEndpoints.auth.me);
       }),
       tap((profile) => {
         this.currentUser.set(profile);
@@ -93,8 +94,19 @@ export class AuthService {
     );
   }
 
-  signUp(data: { username: string; password: string; nationalCode: string }) {
-    return this.http.post<any>(`${environment.apiUrl}/${apiEndpoints.auth.signup}`, data).pipe(
+  //جدید اضافه شد
+  signUp(
+    data: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      password: string;
+      nationalCode: string;
+      rulesRegulation: boolean;
+    },
+    context?: HttpContext
+  ) {
+    return this.api.post<any>(apiEndpoints.auth.signup, data, { context: context }).pipe(
       tap(() => {
         console.log('شبیه سازی ثبت نام موفقیت آمیز بود');
       })
@@ -104,9 +116,8 @@ export class AuthService {
     const localRefresh = localStorage.getItem(storageKeys.refreshToken);
     const sessionRefresh = sessionStorage.getItem(storageKeys.refreshToken);
     const currentToken = localRefresh || sessionRefresh;
-
-    return this.http
-      .post<any>(`${environment.apiUrl}/${apiEndpoints.auth.refresh}`, {
+    return this.api
+      .post<any>(apiEndpoints.auth.refresh, {
         refreshToken: currentToken,
       })
       .pipe(

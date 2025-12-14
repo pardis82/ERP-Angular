@@ -12,7 +12,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { NormalizeDigitsDirective } from '../../directives/normalize-digits';
 
-
 @Component({
   selector: 'app-text-field',
   standalone: true,
@@ -54,12 +53,12 @@ export class TextField implements ControlValueAccessor {
 
   //---UI validation helpers---
   showValidationUI = input<boolean>(true);
-  isStatic= input<boolean>(false);
   success = input<boolean>(false);
+  isStatic = input<boolean>(false);
   unmetRules = input<string[]>([]);
   passwordScore = input<number>(0);
   passwordColor = input<string>('');
-  passwordPercentage = input<string>('');
+  passwordPercentage = input<number>(0);
 
   // ----- SIGNAL OUTPUTS -----
   value = model<string>('');
@@ -76,10 +75,10 @@ export class TextField implements ControlValueAccessor {
   // ----- ControlValueAccessor Properties -----
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
-  private isDisabled = false;
+  public isDisabled = false;
 
   //-----Computed signals------
-  float = computed(() => this.hasValue() || this.isFocused()|| this.isStatic());
+  float = computed(() => this.hasValue() || this.isFocused() || this.isStatic());
   hasValue = computed(() => {
     const v = this.value() ?? this.defaultValue() ?? '';
     return v.length > 0;
@@ -124,7 +123,7 @@ export class TextField implements ControlValueAccessor {
     } else if (this.isFocused()) {
       classes.push('text-purple-600');
     } else {
-      classes.push('text-gray-500')
+      classes.push('text-gray-500');
     }
 
     return classes;
