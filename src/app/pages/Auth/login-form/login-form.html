@@ -27,16 +27,6 @@
   >
   </app-text-field>
 
-  <div class="flex justify-start">
-    <button
-      type="button"
-      (click)="ForgotPassClick.emit()"
-      class="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors cursor-pointer"
-    >
-      رمز عبور را فراموش کرده‌اید؟
-    </button>
-  </div>
-
   @if (shouldShowCaptcha()) {
   <div class="animate-fade-in-up p-4 bg-red-50 border border-red-100 rounded-xl">
     <p class="text-xs text-red-600 mb-3 font-bold text-center">
@@ -80,6 +70,16 @@
     </div>
   </div>
   }
+
+  <div class="flex justify-start">
+    <button
+      type="button"
+      (click)="ForgotPassClick.emit()"
+      class="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors cursor-pointer"
+    >
+      رمز عبور را فراموش کرده‌اید؟
+    </button>
+  </div>
 
   <button
     type="submit"
