@@ -5,8 +5,8 @@ import { AuthService } from '../../services/auth.service';
 import { SignUpForm } from './sign-up-form/sign-up-form';
 import { LoginForm } from './login-form/login-form';
 import { VerificationCode } from '../../components/verification-code/verification-code';
-import { PhoneNumberValidationService } from '../../services/validation/PhoneNumber/phone-number-validation';
-import { PasswordValidationService } from '../../services/validation/Password/password-validation';
+import { PhoneNumberValidationService } from '../../services/validation/phone-number-validation';
+import { PasswordValidationService } from '../../services/validation/pass-validation';
 import { TextField } from '../../components/text-field/text-field';
 import { routePaths } from '../../config/route-paths';
 import { skipToast } from '../../core/http-utils';
@@ -27,20 +27,19 @@ export class AuthComponent implements OnDestroy, OnInit {
   private phoneValidation = inject(PhoneNumberValidationService);
   private passValidation = inject(PasswordValidationService);
 
-  // Signals
   public AuthMode = signal<Mode>('SignUp');
   public PhoneNumber = signal('');
   public captchaInput = signal(0);
   public verificationCodeSent = signal('345678');
   public isVerificationLoading = signal(false);
   public isLoading = signal(false);
-  // SignUp State
+
   public loginAttempts = signal(0);
   public isCodeSent = signal(false);
   public remainingTime = signal(60);
   private readonly OTP_DURATION = 60;
   private timerInterval: any;
-  // 4. New Reactive Form & Validation Signals
+
   public phoneForm: FormGroup;
   public resetPassForm: FormGroup;
   public phoneUnmet = signal<string[]>([]);
@@ -51,7 +50,7 @@ export class AuthComponent implements OnDestroy, OnInit {
   public passwordPercentage = signal(0);
   public passwordUnmet = signal<string[]>([]);
 
-  public shouldShowcaptcha = computed(() => this.loginAttempts() >= 2);
+  public shouldShowcaptcha = computed(() => this.loginAttempts() >= 5);
   public isInLoginMode = computed(() => this.AuthMode() === 'Login');
   public isInSignUpMode = computed(() => this.AuthMode() === 'SignUp');
   public isInPhoneEntryMode = computed(
@@ -93,9 +92,7 @@ export class AuthComponent implements OnDestroy, OnInit {
       confirmPassword: ['', [Validators.required]],
     });
 
-    // 3. گوش دادن به تغییرات پسورد جدید برای آپدیت کردن نوار رنگی
     this.resetPassForm.get('newPassword')?.valueChanges.subscribe((val) => {
-      // چون متد updateValidationSignal شما انتظار یک آبجکت دارد:
       this.updateValidationSignal({ password: val });
     });
   }
@@ -103,7 +100,7 @@ export class AuthComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.phoneForm.get('phoneNumber')?.valueChanges.subscribe((val) => {
       if (this.phoneForm.enabled && this.isCodeSent() && val !== this.PhoneNumber()) {
-        this.isCodeSent.set(false); // مخفی کردن باکس کد
+        this.isCodeSent.set(false);
         this.verificationCodeSent.set('');
       }
     });
@@ -265,6 +262,7 @@ export class AuthComponent implements OnDestroy, OnInit {
     this.authService.login(loginData, loginData.rememberMe, skipToast()).subscribe({
       next: (response) => {
         this.isLoading.set(false);
+        this.loginAttempts.set(0);
         const role = response.role || 'user';
         if (role === 'admin') {
           this.router.navigate(['/', routePaths.adminDashboard]);
@@ -274,8 +272,9 @@ export class AuthComponent implements OnDestroy, OnInit {
       },
       error: (err) => {
         this.isLoading.set(false);
+        this.loginAttempts.update((count) => count + 1);
         console.log(err, 'خطا در لاگین');
-        alert('نام کاربری و یا رمز عبور اشتباه است');
+        alert(' رمز عبور اشتباه است');
       },
     });
   }

@@ -48,16 +48,34 @@
         <app-text-field
           formControlName="captcha"
           label="کد امنیتی"
-          placeholder="کد روبرو را وارد کنید"
-          backgroundColor="#ffffff"
+          backgroundColor="#f9fafb"
+          placeholder="کد امنیتی"
+          type="text"
+          [showValidationUI]="true"
+          [success]="captchaInput() === 8372"
         >
         </app-text-field>
       </div>
 
       <div
-        class="w-1/3 h-[48px] mb-[2px] bg-gray-200 rounded-lg flex items-center justify-center select-none tracking-widest font-mono font-bold text-xl text-gray-600 rotate-2"
+        class="w-1/3 h-[48px] bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center relative overflow-hidden select-none"
       >
-        8372
+        <div
+          class="absolute inset-0 opacity-20 pointer-events-none"
+          style="
+            background-image: repeating-linear-gradient(
+              45deg,
+              transparent,
+              transparent 5px,
+              #000 5px,
+              #000 6px
+            );
+          "
+        ></div>
+        <span
+          class="font-mono text-xl font-bold tracking-widest text-gray-600 rotate-3 inline-block"
+          >8372</span
+        >
       </div>
     </div>
   </div>

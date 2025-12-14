@@ -35,6 +35,7 @@ export class LoginForm {
       return result.isValid ? null : { invalidEmail: true };
     };
   }
+  public captchaInput = signal(0);
   public loginSubmit = output<{
     emailorphone: string;
     password: string;
@@ -56,6 +57,9 @@ export class LoginForm {
     });
     this.loginForm.get('emailorphone')?.valueChanges.subscribe((val) => {
       this.handleInputTypeAndValidation(val);
+    });
+    this.loginForm.get('captcha')?.valueChanges.subscribe((val) => {
+      this.captchaInput.set(Number(val));
     });
 
     effect(() => {

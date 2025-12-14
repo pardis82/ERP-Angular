@@ -40,6 +40,7 @@
         <app-login-form
           (loginSubmit)="handleLoginSubmit($event)"
           (ForgotPassClick)="switchTo('ForgotPass-PhoneCodeEntry')"
+          [shouldShowCaptcha]="shouldShowcaptcha()"
         >
         </app-login-form>
       </div>
@@ -97,7 +98,7 @@
                 placeholder="کد امنیتی"
                 type="text"
                 [showValidationUI]="true"
-                [success]="captchaInput() === 8372"
+                [success]="captchaInput() === 8273"
               >
               </app-text-field>
             </div>
